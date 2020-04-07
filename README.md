@@ -8,6 +8,14 @@ The slowdown (at least as far as I have observed) is caused by a wait
 for the ACK from the first 8k chunk before the underlying 
 network sends the next fragment.
 
+Example from a vagrant instance:
+```text
+Connection opened...
+With message size 8192, got 100 responses in 0.025506973266602 seconds.
+With message size 8193, got 100 responses in 8.0555248260498 seconds.
+Connection closed...
+```
+
 To use:
 ```shell script
 composer install
