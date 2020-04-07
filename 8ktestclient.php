@@ -10,8 +10,13 @@ $loop   = \React\EventLoop\Factory::create();
 $connector = new Connector($loop);
 
 $connector->connect('tcp://127.0.0.1:9005')->then(function (ConnectionInterface $connection) {
-    $connection->on('data', function ($data) use ($connection) {
-        $connection->write($data);
+    $buffer = '';
+    $connection->on('data', function ($data) use ($connection, &$buffer) {
+        $buffer .= $data;
+        if (substr($buffer, -1) === ' ') {
+            $connection->write($buffer);
+            $buffer = '';
+        }
     });
 });
 

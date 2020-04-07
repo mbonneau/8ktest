@@ -11,7 +11,10 @@ $socket = new \React\Socket\Server('127.0.0.1:9005', $loop);
 
 $socket->on('connection', function (ConnectionInterface $connection) {
     // we will send "messages" and wait for them to be echoed back from the client
-    $msg = str_repeat('*', 8192); // try 8192 and 8193 for message sizes
+    $msg = str_repeat('*', 8191); // try 8192 and 8193 for message sizes
+
+    // put a field sep so the client can wait until it has the whole message
+    $msg .= ' ';
 
     echo "Connection opened...\n";
 
@@ -32,7 +35,8 @@ $socket->on('connection', function (ConnectionInterface $connection) {
                     return;
                 }
                 // one more character
-                $msg .= '*';
+                $msg = str_repeat('*', 8192);
+                $msg .= ' ';
                 // reset counter
                 $msgCount = 0;
             }
